@@ -1,0 +1,26 @@
+{
+  "name": "yconnect-jp",
+  "description": "A Simple Yahoo Japan Yconnect Library",
+  "version": "0.0.1",
+  "author": "TSUN YUNG LAI <gourrymk2@gmail.com>",
+  "contributors": [
+    {
+      "name": "TSUN YUNG LAI",
+      "email": "gourrymk2@gmail.com"
+    }
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "yahoo",
+    "api",
+    "yconnect"
+  ],
+  "repository": "git://github.com/gourrymk2/yconnect-jp",
+  "main": "index",
+  "engines": {
+    "node": "*"
+  }
+}
