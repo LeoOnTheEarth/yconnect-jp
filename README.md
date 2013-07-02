@@ -7,7 +7,7 @@ Example:
     var http = require('http');
     var url = require('url');
     var Yconnect = require('yconnect-jp');
-
+    
     var options = {
       appId: 'id',
       secret: 'secret',
@@ -16,10 +16,10 @@ Example:
       nonce: 'LPMKOKJMNIJNJIJBHUHUHYGVCFTFCFRDXDESZSEWSAWQERTYIU'
     };
     var yconnect = new Yconnect(options);
-
+    
     http.createServer(function(request, response) {
       var queryData = url.parse(request.url, true).query;
-
+      
       if (queryData.code) {
         yconnect.getAccessToken(queryData.code, function(accessToken) {
           response.writeHead(200, {"Content-Type": "text/plain"});
