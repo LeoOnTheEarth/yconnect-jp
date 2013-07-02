@@ -1,82 +1,87 @@
 var https = require('https');
 var querystring = require('querystring');
 
-exports.Yconnect = function (options) {
+var Yconnect = exports = module.exports = function (options) {
+  this.init(options);
+};
+
+Yconnect.prototype.init = function (options) {
   this.options = {
-    appId: options.appId,
-    secret: options.secret,
-    redirectUri: options.redirectUri,
-    state: options.state,
-    nonce: options.nonce,
-    prompt: '',
-    scope: 'openid profile email address',
+    appId            : options.appId,
+    secret           : options.secret,
+    redirectUri      : options.redirectUri,
+    state            : options.state,
+    nonce            : options.nonce,
+    prompt           : '',
+    scope            : 'openid profile email address',
     authorizationCode: '',
   };
   
   options = options || {};
-  for (field in options) {
+  
+  for (var field in options) {
     this.options[field] = options[field];
   }
   
-  var buff = new Buffer(this.options.appId + ':' + this.options.secret);
-  this.options.authorizationCode = buff.toString('base64');
-  
-  var self = this;
-  
-  this.getAuthorizationUri = function () {
-    var uri = 'https://auth.login.yahoo.co.jp/yconnect/v1/authorization?';
-    var query = {
+  this.options.authorizationCode = 
+    (new Buffer(options.appId + ':' + options.secret)).toString('base64');
+};
+
+Yconnect.prototype.getAuthorizationUri = function () {
+  var self = this
+    , uri = 'https://auth.login.yahoo.co.jp/yconnect/v1/authorization?'
+    , query = {
       response_type: 'code id_token',
-      client_id: self.options.appId,
-      redirect_uri: self.options.redirectUri,
-      state: self.options.state,
-      prompt: self.prompt,
-      nonce: self.options.nonce,
-      scope: self.scope
+      client_id    : self.options.appId,
+      redirect_uri : self.options.redirectUri,
+      state        : self.options.state,
+      prompt       : self.options.prompt,
+      nonce        : self.options.nonce,
+      scope        : self.scope
     };
-    
-    return uri + querystring.stringify(query);
-  };
   
-  this.getAccessToken = function (code, callback) {
-    var postData = querystring.stringify({
-      grant_type: 'authorization_code',
-      code: code,
+  return uri + querystring.stringify(query);
+};
+
+Yconnect.prototype.getAccessToken = function (code, callback) {
+  var self = this
+    , postData = querystring.stringify({
+      grant_type  : 'authorization_code',
+      code        : code,
       redirect_uri: self.options.redirectUri
-    });
-    var options = {
+    })
+    , options = {
       hostname: 'auth.login.yahoo.co.jp',
-      port: 443,
-      path: '/yconnect/v1/token',
-      method: 'POST',
-      headers: {
+      port    : 443,
+      path    : '/yconnect/v1/token',
+      method  : 'POST',
+      headers : {
         "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": postData.length,
-        "Authorization": "Basic " + this.options.authorizationCode
+        "Authorization": "Basic " + self.options.authorizationCode
       }
-    };
-    
-    var req = https.request(options, function(res) {
+    }
+    , req = https.request(options, function (res) {
       var responseBody = '';
+      
       res.setEncoding('utf8');
+      
       res.on('data', function (chunk) {
         responseBody += chunk;
       });
+      
       res.on('end', function () {
         callback(JSON.parse(responseBody));
       });
     });
-    
-    req.on('error', function(e) {
-      callback({error:'problem with request: ' + e.message});
-    });
-    
-    req.write(postData);
-    req.end();
-  };
   
-  return this;
-}
+  req.on('error', function (e) {
+    callback({error:'problem with request: ' + e.message});
+  });
+  
+  req.write(postData);
+  req.end();
+};
 
 /**
  * 1. Authorizationエンドポイント

@@ -6,6 +6,7 @@ Example:
 
     var http = require('http');
     var url = require('url');
+    var Yconnect = require('yconnect-jp');
 
     var options = {
       appId: 'id',
@@ -14,7 +15,7 @@ Example:
       state: 'ZSEDXDRFCFTTGVGYBNJUIJNJKIOKMKLPOOLLP',
       nonce: 'LPMKOKJMNIJNJIJBHUHUHYGVCFTFCFRDXDESZSEWSAWQERTYIU'
     };
-    var yconnect = require('yconnect-jp').Yconnect(options);
+    var yconnect = new Yconnect(options);
 
     http.createServer(function(request, response) {
       var queryData = url.parse(request.url, true).query;
