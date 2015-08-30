@@ -2,11 +2,11 @@
   "name": "yconnect-jp",
   "description": "A Simple Yahoo Japan Yconnect Library",
   "version": "0.1.0",
-  "author": "TSUN YUNG LAI <gourrymk2@gmail.com>",
+  "author": "Leo <leo.on.the.earth@gmail.com>",
   "contributors": [
     {
-      "name": "TSUN YUNG LAI",
-      "email": "gourrymk2@gmail.com"
+      "name": "Leo",
+      "email": "leo.on.the.earth@gmail.com"
     }
   ],
   "dependencies": {
@@ -18,7 +18,7 @@
     "api",
     "yconnect"
   ],
-  "repository": "git://github.com/gourrymk2/yconnect-jp",
+  "repository": "git://github.com/LeoOnTheEarth/yconnect-jp",
   "main": "index",
   "engines": {
     "node": "*"
